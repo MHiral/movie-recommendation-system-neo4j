@@ -12,10 +12,10 @@ driver = GraphDatabase.driver(
     auth=basic_auth("neo4j", "VOQ_aOTU3FIC5NBslltZqfY3xCQvNkzH2jNwircWigk"),
 )
 
-# How many reviews does each Matrix movie have?
+# How many reviews does each Mission Impossible movie have?
 cypher_query1 = """
 MATCH (m:Movie)<-[:RATED]-(u:User)
-WHERE m.title CONTAINS 'Matrix'
+WHERE m.title CONTAINS 'Mission:'
 WITH m, count(*) AS reviews
 RETURN m.title AS movie, reviews
 ORDER BY reviews DESC LIMIT 5;
@@ -23,14 +23,14 @@ ORDER BY reviews DESC LIMIT 5;
 
 # Items similar to the item you’re looking at now
 cypher_query2 = """
-MATCH p=(m:Movie {title: 'Net, The'})
+MATCH p=(m:Movie {title: 'Inception'})
        -[:ACTED_IN|IN_GENRE|DIRECTED*2]-()
 RETURN p LIMIT 25
 """
 
 # Users who got this item, also got that other item.
 cypher_query3 = """
-MATCH (m:Movie {title: 'Crimson Tide'})<-[:RATED]-
+MATCH (m:Movie {title: 'Inception'})<-[:RATED]-
       (u:User)-[:RATED]->(rec:Movie)
 WITH rec, COUNT(*) AS usersWhoAlsoWatched
 ORDER BY usersWhoAlsoWatched DESC LIMIT 25
@@ -113,7 +113,7 @@ ORDER BY jaccard DESC LIMIT 25
 
 # Show all ratings by Misty Williams
 cypher_query9 = """
-MATCH (u:User {name: 'Misty Williams'})
+MATCH (u:User {name: 'Andrew Freeman'})
 MATCH (u)-[r:RATED]->(m:Movie)
 RETURN *
 LIMIT 100;
@@ -121,14 +121,14 @@ LIMIT 100;
 
 # Show average ratings by Misty Williams
 cypher_query10 = """
-MATCH (u:User {name: 'Misty Williams'})
+MATCH (u:User {name: 'Andrew Freeman'})
 MATCH (u)-[r:RATED]->(m:Movie)
 RETURN avg(r.rating) AS average;
 """
 
 # What are the movies that Misty liked more than average?
 cypher_query11 = """
-MATCH (u:User {name: 'Misty Williams'})
+MATCH (u:User {name: 'Andrew Freeman'})
 MATCH (u)-[r:RATED]->(m:Movie)
 WITH u, avg(r.rating) AS average
 MATCH (u)-[r:RATED]->(m:Movie)
@@ -190,7 +190,7 @@ ORDER BY sscore DESC LIMIT 10
 # Cosine similarity
 # Find the users with the most similar preferences to Cynthia Freeman, according to cosine
 cypher_query15 = """
-MATCH (p1:User {name: "Cynthia Freeman"})-[x:RATED]->
+MATCH (p1:User {name: "Roy Sweeney"})-[x:RATED]->
       (m:Movie)<-[y:RATED]-(p2:User)
 WITH p1, p2, count(m) AS numbermovies,
      sum(x.rating * y.rating) AS xyDotProduct,
@@ -205,7 +205,7 @@ LIMIT 100;
 """
 
 # Pearson similarity
-# Find users most similar to Cynthia Freeman, according to Pearson similarity
+# Find users most similar to a user, according to Pearson similarity
 cypher_query16 = """
 MATCH (u1:User {name:"Cynthia Freeman"})-[r:RATED]->(m:Movie)
 WITH u1, avg(r.rating) AS u1_mean
@@ -229,7 +229,7 @@ ORDER BY pearson DESC LIMIT 100
 
 # kNN movie recommendation using Pearson similarity
 cypher_query17 = """
-MATCH (u1:User {name:"Cynthia Freeman"})-[r:RATED]->(m:Movie)
+MATCH (u1:User {name:"Katelyn Morgan"})-[r:RATED]->(m:Movie)
 WITH u1, avg(r.rating) AS u1_mean
 
 MATCH (u1)-[r1:RATED]->(m:Movie)<-[r2:RATED]-(u2)
