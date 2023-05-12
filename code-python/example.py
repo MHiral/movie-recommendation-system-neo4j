@@ -256,13 +256,29 @@ ORDER BY score DESC LIMIT 25
 cypher_query_list = [cypher_query1, cypher_query2, cypher_query3, cypher_query4, cypher_query5, cypher_query6, cypher_query7, cypher_query8, cypher_query9, cypher_query10,
 cypher_query11, cypher_query12, cypher_query13, cypher_query14, cypher_query15, cypher_query16, cypher_query17]
 
+
+# # To run ALL queries
+# with driver.session(database="neo4j") as session:
+#     for query in cypher_query_list:
+#         print("\n\n-----Query Results-----")
+#         results = session.read_transaction(
+#             lambda tx: tx.run(query).data()
+#         )
+#         for record in results:
+#             print(record)
+
+# driver.close()
+
+# To run a particular query
+# Enter any cypher_query(#)
+query = cypher_query1
 with driver.session(database="neo4j") as session:
-    for query in cypher_query_list:
-        print("\n\n-----Query Results-----")
-        results = session.read_transaction(
-            lambda tx: tx.run(query).data()
-        )
-        for record in results:
-            print(record)
+
+    print("\n\n-----Query Results-----")
+    results = session.read_transaction(
+        lambda tx: tx.run(query).data()
+    )
+    for record in results:
+        print(record)
 
 driver.close()
