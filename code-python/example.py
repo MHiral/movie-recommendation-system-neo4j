@@ -45,7 +45,7 @@ MATCH (m:Movie)-[:IN_GENRE]->(g:Genre)
 WHERE m.title = 'Inception'
 WITH rec, collect(g.name) AS genres, count(*) AS commonGenres
 RETURN rec.title, genres, commonGenres
-ORDER BY commonGenres DESC LIMIT 10;
+ORDER BY commonGenres DESC LIMIT 2;
 """
 
 # Recommend movies similar to those the user has already watched
@@ -111,7 +111,7 @@ RETURN m.title, other.title, common, set1,set2,
 ORDER BY jaccard DESC LIMIT 25
 """
 
-# Show all ratings by Misty Williams
+# Show all ratings by Andrew Freeman
 cypher_query9 = """
 MATCH (u:User {name: 'Andrew Freeman'})
 MATCH (u)-[r:RATED]->(m:Movie)
@@ -119,14 +119,14 @@ RETURN *
 LIMIT 100;
 """
 
-# Show average ratings by Misty Williams
+# Show average ratings by Andrew Freeman
 cypher_query10 = """
 MATCH (u:User {name: 'Andrew Freeman'})
 MATCH (u)-[r:RATED]->(m:Movie)
 RETURN avg(r.rating) AS average;
 """
 
-# What are the movies that Misty liked more than average?
+# What are the movies that Andrew liked more than average?
 cypher_query11 = """
 MATCH (u:User {name: 'Andrew Freeman'})
 MATCH (u)-[r:RATED]->(m:Movie)
@@ -188,7 +188,7 @@ ORDER BY sscore DESC LIMIT 10
 """
 
 # Cosine similarity
-# Find the users with the most similar preferences to Cynthia Freeman, according to cosine
+# Find the users with the most similar preferences to Roy Sweeney, according to cosine
 cypher_query15 = """
 MATCH (p1:User {name: "Roy Sweeney"})-[x:RATED]->
       (m:Movie)<-[y:RATED]-(p2:User)
