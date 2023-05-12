@@ -56,5 +56,7 @@ They have a single direction and type.
 `title`, `name`, `year`, `rating` are some of the properties used in this example.
 
 ## Contributors
+* Hiral Moliya - Dataset preparation, Neo4j setup, Graph DB build, Cypher queries
+* Vedant Gupta - Dataset preparation, Graph DB build, data import, querying
 
 
